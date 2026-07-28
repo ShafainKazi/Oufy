@@ -24,9 +24,11 @@
 </style>
 </head><body>
 <div id="root"></div>
-<script type="text/babel" src="components.jsx"></script>
-<script type="text/babel" src="experience.section.jsx"></script>
-<script type="text/babel" src="landing.page.jsx"></script>
+<!-- Bump ?v= whenever these files change what they share through window: the three
+     move as a set, so a cached copy of one can never mix with a fresh copy of another. -->
+<script type="text/babel" src="components.jsx?v=2"></script>
+<script type="text/babel" src="experience.section.jsx?v=2"></script>
+<script type="text/babel" src="landing.page.jsx?v=2"></script>
 <script type="text/babel">
 ReactDOM.createRoot(document.getElementById('root')).render(<window.OufyLanding/>);
 </script>
