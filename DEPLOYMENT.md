@@ -38,12 +38,17 @@ and none here do) but it removes all ambiguity and speeds up the deploy.
 
 ## Open decisions
 
-### Performance — measure after deploy, do not pre-optimise
+### Performance — RESOLVED, no optimisation for now
 
-**Decision: ship as-is first, take real numbers from the live URL, then optimise.**
-No changes to the React/Babel setup until there is a measurement to justify them.
+**Deployed as-is on 2026-07-28. Judged acceptable on the live URL — not slow. No
+optimisation work is planned.** The React development builds and in-browser Babel stay.
 
-Prime suspect, recorded so the measurement is informed — **the images, not the JS**:
+Caveat on that verdict: it is a developer-machine impression, not an instrumented
+measurement, and the page had likely been loaded before. A first-time visitor on a phone
+or a slow connection downloads all 19 MB cold. Since this is a conversion page aimed
+squarely at first-time visitors, revisit if analytics show mobile bounce or slow loads.
+
+Standing suspect if that day comes — **the images, not the JS**:
 
 - `assets/images/demo/` totals **19 MB** across 15 PNGs.
 - The 9 closet cutouts are **1122×1402** each but render into **46px** thumbnails

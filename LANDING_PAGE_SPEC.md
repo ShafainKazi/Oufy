@@ -34,7 +34,7 @@ Component: `Experience` (Experience.jsx). All step content is indented 60px unde
 - Step square becomes gradient+check when all 9 added
 
 **Step 2 — "Generate today's look"** (dimmed to 35% until Step 1 complete)
-- Left card (stage + info): CTA **Generate** → 1.1s "Styling…" spinner → reveals outfit flat-lay (multiply-blend) with "3 pieces" chip, title, piece chips, and a one-line "why" with a gold sparkle icon. Button label becomes **Generate another**, then **All three styled** (disabled). PageDots + **Previous looks** cycle revealed outfits.
+- Left card (stage + info): CTA **Generate** → 1s "Styling…" spinner → reveals outfit flat-lay (multiply-blend) with "3 pieces" chip, title, piece chips, and a one-line "why" with a gold sparkle icon. Button label becomes **Generate another**, then **All three styled** (disabled). PageDots + **Previous looks** cycle revealed outfits.
 - Outfits (title → pieces → why):
   1. **Smart Casual** — Navy Shirt, Beige Chinos, White Sneakers — "Mild and sunny — breathable cotton, sleeves ready to roll, nothing that fights the weather."
   2. **The Work Fit** — Striped White Shirt, Black Trousers, Black Loafers — "Meetings till six — crisp stripes and black leather read sharp without a jacket."
@@ -42,7 +42,7 @@ Component: `Experience` (Experience.jsx). All step content is indented 60px unde
 
 **Step 3 — try-on card (right of Step 2 grid)**
 - Empty state: accessibility icon + "Generate a look first" / "See it on a body, not a bed"
-- CTA **Try this on** → 1.4s "Fitting it on you…" spinner → the matching AI model cutout fades in with an "AI try-on" chip; helper copy flips to "That settles it — hang it back or wear it out."; button becomes **Looks right** (inert). Per-outfit tried state is remembered.
+- CTA **Try this on** → 1s "Fitting it on you…" spinner → the matching AI model cutout fades in with an "AI try-on" chip; helper copy flips to "That settles it — hang it back or wear it out."; button becomes **Looks right** (inert). Per-outfit tried state is remembered.
 
 ### 4. Pricing (id `pricing`)
 - Eyebrow PRICING · title **"Try it free, keep it for less than a coffee a week"**

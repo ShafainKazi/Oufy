@@ -2,6 +2,7 @@
 const { Button, Chip, SectionHeader, Icon, PageDots } = window;
 
 const XIMG = (n) => `./assets/images/demo/${n}`;
+const LATENCY = 1000;                                // simulated generate/try-on delay
 
 const CLOSET = [
   { id: 'blue', name: 'Navy Shirt', brand: 'Uniqlo', img: XIMG('cut-item-blue-shirt.png') },
@@ -112,23 +113,28 @@ function Experience() {
   const allAdded = added.length === CLOSET.length;
   const toggle = (id) => setAdded((a) => a.includes(id) ? a.filter((x) => x !== id) : [...a, id]);
 
+  // Start the fetch on click, not when the <img> mounts — the spinner then covers the download.
+  const preload = (src) => { new Image().src = src; };
+
   const generate = () => {
     if (generating || revealed >= OUTFITS.length) return;
+    preload(OUTFITS[revealed].flat);
     setGenerating(true);
     setTimeout(() => {
       setCurrent(revealed);
       setRevealed(revealed + 1);
       setGenerating(false);
-    }, 1100);
+    }, LATENCY);
   };
 
   const tryOn = () => {
     if (trying || tried.includes(current)) return;
+    preload(OUTFITS[current].tryon);
     setTrying(true);
     setTimeout(() => {
       setTried((t) => [...t, current]);
       setTrying(false);
-    }, 1400);
+    }, LATENCY);
   };
 
   const outfit = revealed > 0 ? OUTFITS[current] : null;

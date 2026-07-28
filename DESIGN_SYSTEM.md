@@ -128,7 +128,7 @@ Full-bleed ambient mesh behind a 1.1fr/0.9fr grid (84px top / 96px bottom paddin
 - Ambient blobs: 14–16s alternate drift loops; staggered `animation-delay`.
 - Content reveals: `.x-fadein` — 0.5s ease, fade + 10px rise.
 - Spinners: 0.8s linear rotation.
-- Generating/trying delays are simulated at 1.1s/1.4s.
+- Generating/trying delays are simulated at 1s (`LATENCY` in `experience.section.jsx`). The target image is preloaded on click, so the spinner covers its download instead of the fetch starting after it.
 - Gating: later steps sit at `opacity: .35; pointer-events: none` until prerequisites complete (0.4s ease transition).
 - Hover/press: buttons lighten (never darken); text actions drop to 60% opacity; smooth scroll for in-page nav.
 - Respect `prefers-reduced-motion` for all looping animation.
