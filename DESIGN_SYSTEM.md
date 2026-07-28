@@ -141,10 +141,20 @@ Full-bleed ambient mesh behind a 1.1fr/0.9fr grid (84px top / 96px bottom paddin
 
 ## 14. Responsive behavior
 
-The current implementation is desktop-first (1080px container; grids in fixed fr units). Intended adaptation:
-- **Tablet (≤1024px):** two-column grids collapse to single column, media first; closet grid 3→2 columns; hero headline 44–48px.
-- **Mobile (≤640px):** everything single-column; gutter 20px; hero 36px; nav keeps wordmark + CTA only; closet grid 2 columns; step content loses its 60px left indent; stages ~280px tall.
-- Buttons never shrink below 44px hit height on touch.
+Implemented at two breakpoints. Because layout lives in inline styles — which cannot carry
+media queries — the breakpoints are read in JS via the `useBreakpoint()` hook in
+`components.jsx` (exported through `window`, like every other shared component) and branched
+on inline. `BREAKPOINT` in that file is the single source of truth for the widths.
+
+- **Tablet (≤1024px):** two-column grids collapse to single column; closet grid 3→2 columns;
+  hero headline 46px. Step content keeps its 60px indent.
+- **Mobile (≤640px):** everything single-column; gutter 20px; hero 36px; nav keeps wordmark +
+  CTA only; closet grid 2 columns; step content loses its 60px left indent; stages 280px tall.
+- Buttons never shrink below 44px hit height on touch — `compact` buttons grow 36→44 and text
+  buttons take a 44px `minHeight` on mobile.
+
+Note: the hero stays **text-first** when it collapses, rather than media-first like the other
+two-column grids — the headline is the page's opening line and should not sit below a card.
 
 ## 15. Do's and don'ts
 

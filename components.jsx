@@ -3,6 +3,34 @@
 
 
 /**
+ * Viewport breakpoints — see DESIGN_SYSTEM.md §14. Layout lives in inline styles
+ * throughout this page, and inline styles cannot carry media queries, so the
+ * breakpoints are read in JS and branched on instead.
+ */
+const BREAKPOINT = {
+  tablet: '(max-width: 1024px)',
+  mobile: '(max-width: 640px)',
+  narrow: '(max-width: 480px)',   // phones proper: two closet columns stop fitting readably
+};
+
+function useBreakpoint() {
+  const read = () => ({
+    tablet: window.matchMedia(BREAKPOINT.tablet).matches,
+    mobile: window.matchMedia(BREAKPOINT.mobile).matches,
+    narrow: window.matchMedia(BREAKPOINT.narrow).matches,
+  });
+  const [bp, setBp] = React.useState(read);
+  React.useEffect(() => {
+    const mqs = Object.values(BREAKPOINT).map((q) => window.matchMedia(q));
+    const sync = () => setBp(read());
+    mqs.forEach((m) => m.addEventListener('change', sync));
+    return () => mqs.forEach((m) => m.removeEventListener('change', sync));
+  }, []);
+  return bp;
+}
+
+
+/**
  * Material Symbols Rounded glyph — mirrors Flutter's Icons.*_rounded / *_outlined.
  * Requires the Material Symbols Rounded stylesheet (loaded by styles consumers or card HTML).
  */
@@ -33,6 +61,7 @@ function Icon({ name, size = 24, filled = false, color = 'currentColor', style }
  */
 function Button({ label, onClick, variant = 'primary', compact = false, loading = false, block = false, style }) {
   const [pressed, setPressed] = React.useState(false);
+  const { mobile } = useBreakpoint();
 
   if (variant === 'text') {
     return (
@@ -42,6 +71,7 @@ function Button({ label, onClick, variant = 'primary', compact = false, loading 
           font: 'var(--text-chip)', fontFamily: 'var(--font-ui)', color: 'var(--action)',
           background: 'none', border: 'none', cursor: 'pointer', whiteSpace: 'nowrap',
           padding: 'var(--space-xs) var(--space-sm)', borderRadius: 8,
+          minHeight: mobile ? 44 : undefined,   // touch hit height, §14
           opacity: pressed ? 0.6 : 1, ...style,
         }}
         onMouseDown={() => setPressed(true)}
@@ -53,7 +83,7 @@ function Button({ label, onClick, variant = 'primary', compact = false, loading 
     );
   }
 
-  const h = compact ? 36 : 46;
+  const h = compact ? (mobile ? 44 : 36) : 46;   // never below 44 on touch, §14
   return (
     <button
       onClick={loading ? undefined : onClick}
@@ -211,4 +241,4 @@ function PickCard({ src, alt = '', title, pieces = [], pieceCount, ctaLabel = 'T
   );
 }
 
-Object.assign(window, { Icon, Button, Chip, SectionHeader, PageDots, PickCard });
+Object.assign(window, { Icon, Button, Chip, SectionHeader, PageDots, PickCard, useBreakpoint });

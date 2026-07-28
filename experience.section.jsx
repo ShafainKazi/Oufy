@@ -1,5 +1,5 @@
 // OutfitAI landing — the interactive linear experience: add clothes → generate → try on.
-const { Button, Chip, SectionHeader, Icon, PageDots } = window;
+const { Button, Chip, SectionHeader, Icon, PageDots, useBreakpoint } = window;
 
 const XIMG = (n) => `./assets/images/demo/${n}`;
 const LATENCY = 1000;                                // simulated generate/try-on delay
@@ -35,8 +35,9 @@ const OUTFITS = [
 ];
 
 function StepHeader({ n, eyebrow, title, done }) {
+  const { mobile } = useBreakpoint();
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: mobile ? 12 : 16 }}>
       <span style={{
         width: 44, height: 44, borderRadius: 16, flex: 'none',
         background: done ? 'var(--grad-cta)' : 'var(--surface)',
@@ -53,24 +54,26 @@ function StepHeader({ n, eyebrow, title, done }) {
 }
 
 function ItemCard({ item, added, onToggle }) {
+  const { mobile } = useBreakpoint();
   return (
     <button onClick={onToggle} style={{
-      display: 'flex', alignItems: 'center', gap: 12, textAlign: 'left', cursor: 'pointer',
-      padding: '14px 16px', borderRadius: 'var(--radius-md)',
+      display: 'flex', alignItems: 'center', gap: mobile ? 10 : 12, textAlign: 'left', cursor: 'pointer',
+      minWidth: 0,   // let the card shrink inside its grid track instead of forcing it wide
+      padding: mobile ? '12px 12px' : '14px 16px', borderRadius: 'var(--radius-md)',
       background: added ? 'rgba(255,255,255,0.86)' : 'var(--surface)',
       border: added ? '2px solid var(--action)' : '1px solid var(--line)',
       boxShadow: added ? '0 6px 20px rgba(107,76,56,0.18)' : 'none',
       fontFamily: 'var(--font-ui)', transition: 'all .2s ease',
     }}>
       <span style={{
-        width: 46, height: 46, borderRadius: 14, flex: 'none',
+        width: mobile ? 40 : 46, height: mobile ? 40 : 46, borderRadius: 14, flex: 'none',
         background: 'var(--tile)', border: '1px solid var(--line)',
         display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
         padding: 4, boxSizing: 'border-box', overflow: 'hidden',
       }}><img src={item.img} alt={item.name} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} /></span>
       <span style={{ flex: 1, minWidth: 0 }}>
         <span style={{ display: 'block', font: '700 13px var(--font-ui)', color: 'var(--ink)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.name}</span>
-        <span style={{ display: 'block', font: '500 11px var(--font-ui)', color: 'var(--ink-muted)', marginTop: 2 }}>{item.brand}</span>
+        <span style={{ display: 'block', font: '500 11px var(--font-ui)', color: 'var(--ink-muted)', marginTop: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.brand}</span>
       </span>
       <span style={{
         width: 24, height: 24, borderRadius: 12, flex: 'none',
@@ -103,6 +106,9 @@ function Thinking({ label }) {
 }
 
 function Experience() {
+  const { tablet, mobile, narrow } = useBreakpoint();
+  const indent = mobile ? 0 : 60;          // §14: step content loses its indent on mobile
+  const stage = mobile ? 280 : 340;
   const [added, setAdded] = React.useState([]);
   const [revealed, setRevealed] = React.useState(0);   // how many outfits generated
   const [current, setCurrent] = React.useState(0);     // outfit in view
@@ -140,18 +146,19 @@ function Experience() {
   const outfit = revealed > 0 ? OUTFITS[current] : null;
 
   return (
-    <section id="experience" style={{ maxWidth: 1080, margin: '0 auto', padding: '88px 24px 40px', display: 'flex', flexDirection: 'column', gap: 72 }}>
+    <section id="experience" style={{ maxWidth: 1080, margin: '0 auto', padding: mobile ? '64px 20px 32px' : '88px 24px 40px', display: 'flex', flexDirection: 'column', gap: mobile ? 48 : 72 }}>
 
       {/* ── Step 1: add clothes ── */}
       <div data-screen-label="Step 1 — Add clothes">
         <StepHeader n={1} eyebrow="Step one" title="Add your clothes" done={allAdded} />
-        <p style={{ font: 'var(--text-prose)', fontSize: 15, color: 'var(--ink-muted)', maxWidth: 480, margin: '14px 0 0 60px' }}>
+        <p style={{ font: 'var(--text-prose)', fontSize: 15, color: 'var(--ink-muted)', maxWidth: 480, margin: `14px 0 0 ${indent}px` }}>
           Your closet, catalogued. Tap the pieces to add them — nine pieces are enough for a week of looks.
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, margin: '24px 0 0 60px' }}>
+        {/* minmax(0,…) not 1fr: a bare 1fr track keeps its content's min-content width and overflows. */}
+        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${narrow ? 1 : tablet ? 2 : 3}, minmax(0, 1fr))`, gap: 12, margin: `24px 0 0 ${indent}px` }}>
           {CLOSET.map((it) => <ItemCard key={it.id} item={it} added={added.includes(it.id)} onToggle={() => toggle(it.id)} />)}
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, margin: '20px 0 0 60px' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 16, margin: `20px 0 0 ${indent}px` }}>
           <Button label={allAdded ? 'Wardrobe ready' : 'Add all nine'} compact onClick={() => setAdded(CLOSET.map((i) => i.id))} />
           <span style={{ font: '600 12px var(--font-ui)', color: 'var(--ink-muted)' }}>{added.length} of {CLOSET.length} added</span>
         </div>
@@ -160,14 +167,14 @@ function Experience() {
       {/* ── Step 2 + 3: generate & try on ── */}
       <div data-screen-label="Step 2 — Generate" style={{ opacity: allAdded ? 1 : 0.35, pointerEvents: allAdded ? 'auto' : 'none', transition: 'opacity .4s ease' }}>
         <StepHeader n={2} eyebrow="Step two" title="Generate today's look" done={revealed >= OUTFITS.length} />
-        <p style={{ font: 'var(--text-prose)', fontSize: 15, color: 'var(--ink-muted)', maxWidth: 480, margin: '14px 0 0 60px' }}>
+        <p style={{ font: 'var(--text-prose)', fontSize: 15, color: 'var(--ink-muted)', maxWidth: 480, margin: `14px 0 0 ${indent}px` }}>
           {allAdded ? 'Your stylist reads the weather and your day, then builds looks from what you own.' : 'Add your clothes first — your stylist works only with what you own.'}
         </p>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, margin: '24px 0 0 60px', alignItems: 'stretch' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: tablet ? 'minmax(0, 1fr)' : 'repeat(2, minmax(0, 1fr))', gap: 20, margin: `24px 0 0 ${indent}px`, alignItems: 'stretch' }}>
           {/* The look */}
           <div style={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 'var(--radius-lg)', padding: 16, boxShadow: 'var(--shadow-card)' }}>
-            <Stage height={340}>
+            <Stage height={stage}>
               {generating ? <Thinking label="Styling…" />
                 : outfit ? <img key={outfit.flat} className="x-fadein" src={outfit.flat} alt={outfit.title} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', mixBlendMode: 'multiply' }} />
                 : <span style={{ font: '600 13px var(--font-ui)', color: 'var(--ink-tertiary)' }}>Your first look lands here</span>}
@@ -191,7 +198,7 @@ function Experience() {
               ) : (
                 <div style={{ font: '500 13px var(--font-ui)', color: 'var(--ink-tertiary)' }}>{generating ? 'Reading the weather, checking your day…' : 'Nothing generated yet'}</div>
               )}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginTop: 16 }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 14, marginTop: 16 }}>
                 <Button
                   label={revealed === 0 ? 'Generate' : revealed < OUTFITS.length ? 'Generate another' : 'All three styled'}
                   loading={generating}
@@ -208,7 +215,7 @@ function Experience() {
 
           {/* The try-on */}
           <div data-screen-label="Step 3 — Try on" style={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 'var(--radius-lg)', padding: 16, boxShadow: 'var(--shadow-card)', display: 'flex', flexDirection: 'column' }}>
-            <Stage height={340}>
+            <Stage height={stage}>
               {trying ? <Thinking label="Fitting it on you…" />
                 : outfit && tried.includes(current) ? <img key={outfit.tryon} className="x-fadein" src={outfit.tryon} alt={`${outfit.title} on a model`} style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} />
                 : (
