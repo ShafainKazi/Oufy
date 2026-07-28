@@ -1,0 +1,12 @@
+{
+  "name": "outfitai-landing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "OutfitAI marketing landing page — static HTML + React 18 (UMD) + Babel standalone, no build step.",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+}
