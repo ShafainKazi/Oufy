@@ -1,0 +1,439 @@
+/* Oufy landing — Warm Stone design tokens + the page's only real CSS rules.
+   Fonts are loaded via <link rel="preconnect"/"stylesheet"> in index.html, not @import
+   here: an @import inside a stylesheet serialises the font fetch behind the CSS fetch. */
+
+:root {
+  /* ── Backgrounds ── */
+  --canvas: #F6F0E6;          /* page wash */
+  --canvas-deep: #EAE0D0;     /* gradient end / stone surface */
+  --surface: #EAE0D0;         /* cards, sheets, tiles */
+  --surface-elevated: #F2EAD8;/* modals, popovers */
+  --tile: #EAE0D0;            /* neutral tile behind garment cutouts */
+
+  /* ── Text (warm ink ramp) ──
+     ink-muted is the body/caption colour and clears WCAG AA (4.5:1) on --surface,
+     the tightest background it ever sits on. ink-tertiary is deliberately NOT AA for
+     body text — it is reserved for decorative and disabled use only (it clears the
+     3:1 non-text bar). Informational copy must use --ink-muted or --ink. */
+  --ink: #2A2018;             /* primary text — warm near-black   14.05:1 on canvas */
+  --ink-muted: #76604D;       /* secondary text — muted brown      4.53:1 on surface */
+  --ink-tertiary: #927D62;    /* decorative / disabled only        3.01:1 on surface */
+
+  /* ── Action (the one CTA color) ── */
+  --action: #6B4C38;
+  --action-light: #8C6A54;    /* pressed / hover */
+  --on-action: #FFF8F4;
+
+  /* ── Accent (badges, active states, gold highlights) ── */
+  --accent: #B87A3A;          /* decorative gold — icons, blobs, badge fills */
+  --accent-light: #D4A060;
+  --on-accent: #FFF8EE;
+  /* AA-safe golds, for gold surfaces that carry --on-action text. --accent itself is
+     too light to hold 14px text (3.40:1); these are its text-safe counterparts. */
+  --accent-deep: #8B5C2C;         /* CTA gradient start, resting   5.45:1 */
+  --accent-deep-pressed: #9C6831; /* CTA gradient start, pressed   4.50:1 */
+
+  /* ── Borders & hairlines ── */
+  --line: rgba(212, 196, 170, 0.40);
+  --border: #D4C4AA;
+  --border-subtle: #E2D6C4;
+
+  /* ── Glass (warm translucent panels; never cool) ── */
+  --glass-card: rgba(234, 224, 208, 0.80);
+  --glass-card-hover: rgba(242, 234, 216, 0.90);
+  --glass-border: rgba(212, 196, 170, 0.20);
+  --glass-border-strong: rgba(212, 196, 170, 0.40);
+  --glass-chip: rgba(246, 240, 230, 0.82);  /* canvas @82% — chips over imagery */
+  --glass-nav: rgba(246, 240, 230, 0.70);   /* sticky nav pill */
+  --glass-item-active: rgba(255, 255, 255, 0.86); /* selected closet card fill */
+
+  /* ── Semantic ── */
+  --success: #4A7A3A;
+  --success-light: #EAF3DE;
+  --warning: #D4A017;
+  --error: #A32D2D;
+  --error-light: #FCEBEB;
+
+  /* ── Gradients ── */
+  --grad-page: linear-gradient(135deg, #F6F0E6, #EAE0D0);
+  --grad-mesh-base: linear-gradient(165deg, #EADDC4, #E0CFB0);
+  --grad-cta: linear-gradient(90deg, var(--accent-deep), var(--action));
+  --grad-cta-pressed: linear-gradient(90deg, var(--accent-deep-pressed), var(--action-light));
+  --grad-accent: linear-gradient(135deg, #B87A3A 0%, #D4A060 50%, #F2EAD8 100%);
+  --grad-premium-dark: linear-gradient(135deg, #2A2018 0%, #6B4C38 40%, #B87A3A 100%);
+  --grad-subtle: linear-gradient(180deg, #F6F0E6, #EAE0D0);
+  --grad-stage: radial-gradient(115% 100% at 50% 22%, #FBF7EF 0%, var(--canvas) 55%, var(--tile) 100%);
+
+  /* ── Type ── */
+  --font-ui: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+
+  --text-hero: 800 26px/1.2 var(--font-ui);
+  --text-title: 800 20px/1.25 var(--font-ui);
+  --text-section-head: 800 18px/1.3 var(--font-ui);
+  --text-body-md: 500 14px/1.5 var(--font-ui);
+  --text-overline: 700 11px/1.4 var(--font-ui);
+  --text-caption: 500 11px/1.4 var(--font-ui);
+  --text-chip: 600 13px/1.4 var(--font-ui);
+  --text-screen-title: 500 28px/1.15 var(--font-display);
+  --text-section-title: 500 22px/1.3 var(--font-display);
+  --text-card-title: 500 15px/1.4 var(--font-display);
+  --text-prose: 400 14px/1.6 var(--font-body);
+  --text-label: 500 10px/1.4 var(--font-body);
+
+  --tracking-hero: -0.6px;
+  --tracking-title: -0.5px;
+  --tracking-overline: 1.2px;
+  --tracking-label: 2.5px;
+
+  /* ── Spacing ── */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 20px;
+  --space-xxl: 24px;
+  --space-xxxl: 32px;
+
+  /* ── Radii ── */
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 28px;
+  --radius-pill: 100px;
+
+  /* ── Shadows — warm ink + warm gold, never cool grey ── */
+  --shadow-glass: 0 8px 32px rgba(42, 32, 24, 0.08), 0 2px 8px rgba(184, 122, 58, 0.10);
+  --shadow-elevated: 0 16px 48px rgba(42, 32, 24, 0.12), 0 4px 16px rgba(184, 122, 58, 0.15);
+  --shadow-card: 0 14px 30px -16px rgba(42, 32, 24, 0.16);
+  --shadow-cta: 0 5px 14px -3px rgba(184, 122, 58, 0.35);
+  --shadow-avatar: 0 4px 12px rgba(184, 122, 58, 0.35);
+  --shadow-item-active: 0 6px 20px rgba(107, 76, 56, 0.18);
+
+  /* ── Nav offset — the sticky pill's height + its top gap. Drives scroll-margin-top
+     so in-page jumps land below the nav instead of under it. ── */
+  --nav-offset: 88px;
+
+  /* ── Semantic aliases ── */
+  --text-body: var(--ink);
+  --text-muted: var(--ink-muted);
+  --surface-card: var(--surface);
+  --bg-page: var(--canvas);
+}
+
+
+/* ── Base ── */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+  background: var(--canvas);
+  font-family: var(--font-ui);
+  color: var(--ink);
+}
+/* Anything the nav can jump to stops clear of the sticky pill. */
+[id] { scroll-margin-top: var(--nav-offset); }
+
+img { max-width: 100%; }
+
+button { font: inherit; color: inherit; }
+
+
+/* ── Focus ──
+   Layout on this page lives in inline styles, which cannot express :focus-visible —
+   so every focus ring is defined here. Keyboard users get a visible ring; mouse users
+   do not (that is the :focus-visible contract). */
+:focus-visible {
+  outline: 2px solid var(--action);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+/* The gradient CTA sits on warm cream; a brown ring reads better than the default. */
+button:focus-visible { outline-color: var(--action); }
+
+
+/* ── Screen-reader-only text ── */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+
+/* ── Skip link — first tab stop, visible only when focused ── */
+.skip-link {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -120%);
+  z-index: 100;
+  padding: 10px 18px;
+  background: var(--surface-elevated);
+  color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  font: var(--text-chip);
+  font-family: var(--font-ui);
+  text-decoration: none;
+  transition: transform .18s ease;
+}
+.skip-link:focus {
+  transform: translate(-50%, 0);
+}
+
+
+/* ── Ambient mesh blobs ── */
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .blob-a { animation: drift-a 14s ease-in-out infinite alternate; }
+  .blob-b { animation: drift-b 16s ease-in-out infinite alternate; }
+}
+@keyframes drift-a {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(34px, -20px); }
+}
+@keyframes drift-b {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(-28px, 16px); }
+}
+
+
+/* ── Spinner — one definition, used by both Button and Thinking ── */
+.oufy-spin {
+  display: inline-block;
+  border-style: solid;
+  border-top-color: transparent !important;
+  border-radius: 50%;
+  animation: oufy-spin .8s linear infinite;
+}
+@keyframes oufy-spin { to { transform: rotate(360deg); } }
+
+
+/* ── Content reveal ── */
+.oufy-fadein { animation: oufy-fadein .5s ease both; }
+@keyframes oufy-fadein {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+
+/* ── Reduced motion: kill ambient and entrance animation, and jump instead of glide.
+   `.oufy-spin` is deliberately NOT disabled here — it is essential status feedback
+   (the only thing telling you a generate/try-on is in flight), not decoration, and
+   stopping it would leave a static broken ring. ── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .oufy-fadein,
+  .blob-a,
+  .blob-b {
+    animation: none !important;
+  }
+  * { transition-duration: .01ms !important; }
+}
+
+
+/* ── noscript / no-CDN fallback ── */
+.fallback {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 96px 24px;
+  text-align: center;
+  font-family: var(--font-ui);
+}
+.fallback h1 {
+  font: 500 34px/1.15 var(--font-display);
+  margin: 0 0 14px;
+  color: var(--ink);
+}
+.fallback p {
+  font: var(--text-prose);
+  font-size: 15px;
+  color: var(--ink-muted);
+  margin: 0 0 10px;
+}
+.fallback code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 2px 6px;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   Long-form legal pages (privacy.html, and any terms page added later).
+
+   These pages are plain static HTML — no React, no Babel. They have no
+   interactive state to manage, and pulling in 3 MB of in-browser transpiler to
+   render body text would be indefensible. They share this stylesheet, so they
+   inherit the same tokens, focus rings and reduced-motion rules as the landing
+   page. Keep them dependency-free.
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+.legal-shell {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Quiet header: wordmark home-link, no sticky pill — a legal page is a
+   destination, not part of the conversion story. */
+.legal-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 28px 0 0;
+}
+.legal-head a.wordmark {
+  font: 800 20px/1 var(--font-ui);
+  letter-spacing: -0.5px;
+  color: var(--ink);
+  text-decoration: none;
+}
+.legal-head .spacer { flex: 1; }
+.legal-head a.back {
+  font: var(--text-chip);
+  font-family: var(--font-ui);
+  color: var(--action);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.legal-head a.back:hover { text-decoration: underline; }
+
+.legal h1 {
+  font: 500 clamp(30px, 6vw, 44px)/1.12 var(--font-display);
+  color: var(--ink);
+  margin: 44px 0 10px;
+}
+.legal .dates {
+  font: var(--text-caption);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  color: var(--ink-muted);
+  margin: 0 0 32px;
+}
+
+/* "The short version" callout */
+.legal .summary {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 22px 26px;
+  margin: 0 0 40px;
+  box-shadow: var(--shadow-glass);
+}
+.legal .summary h2 {
+  font: var(--text-overline);
+  font-family: var(--font-ui);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin: 0 0 10px;
+}
+.legal .summary ul { margin: 0; padding-left: 20px; }
+.legal .summary li { margin: 6px 0; }
+
+/* Table of contents */
+.legal nav.toc {
+  border-left: 2px solid var(--line);
+  padding-left: 18px;
+  margin: 0 0 44px;
+}
+.legal nav.toc h2 {
+  font: var(--text-overline);
+  font-family: var(--font-ui);
+  letter-spacing: var(--tracking-overline);
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin: 0 0 10px;
+}
+.legal nav.toc ol {
+  margin: 0;
+  padding-left: 18px;
+  font: var(--text-prose);
+  font-size: 14px;
+  color: var(--ink-muted);
+}
+.legal nav.toc li { margin: 5px 0; }
+
+.legal h2 {
+  font: 800 20px/1.25 var(--font-ui);
+  letter-spacing: var(--tracking-title);
+  color: var(--ink);
+  margin: 44px 0 12px;
+}
+.legal h3 {
+  font: 700 15px/1.35 var(--font-ui);
+  color: var(--ink);
+  margin: 26px 0 8px;
+}
+.legal p,
+.legal li {
+  font: var(--text-prose);
+  font-size: 15px;
+  color: var(--ink-muted);
+}
+.legal p { margin: 0 0 14px; }
+.legal ul, .legal ol { margin: 0 0 14px; padding-left: 22px; }
+.legal li { margin: 7px 0; }
+.legal strong { color: var(--ink); font-weight: 700; }
+.legal a { color: var(--action); }
+
+.legal hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 48px 0;
+}
+
+.legal-foot {
+  border-top: 1px solid var(--line);
+  margin-top: 56px;
+}
+.legal-foot .inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 26px 0 36px;
+  font: 500 12px var(--font-ui);
+  color: var(--ink-muted);
+}
+.legal-foot .inner .spacer { flex: 1; }
+.legal-foot a { color: var(--action); text-decoration: none; }
+.legal-foot a:hover { text-decoration: underline; }
+
+/* ── Unfilled placeholders ──
+   Every factual claim this document cannot invent is wrapped in .todo so it is
+   impossible to publish by accident. Grep for "[[" to find them all, and delete
+   the .draft banner once none remain. */
+.todo {
+  background: rgba(212, 160, 23, 0.20);
+  border-bottom: 1px dashed #9A7411;
+  color: var(--ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.88em;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+.draft {
+  background: rgba(212, 160, 23, 0.16);
+  border: 1px solid rgba(212, 160, 23, 0.55);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin: 24px 0 0;
+  font: var(--text-prose);
+  font-size: 14px;
+  color: var(--ink);
+}
+.draft strong { font-weight: 700; }
