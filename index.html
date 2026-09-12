@@ -821,7 +821,7 @@ function Footer() {
         <span style={{ font: '800 16px var(--font-ui)', letterSpacing: '-0.4px' }}>Oufy</span>
         <span style={{ flex: 1 }}></span>
         {/* Relative, not root-absolute, so these work from file:// too. */}
-        {[['Privacy', './privacy/privacy.html'], ['Terms', './terms/terms.html']].map(([label, href]) => (
+        {[['Privacy', './Privacy/'], ['Terms', './Terms/']].map(([label, href]) => (
           <a key={href} href={href} style={{ font: '600 12px var(--font-ui)', color: 'var(--action)', textDecoration: 'none', whiteSpace: 'nowrap' }}>{label}</a>
         ))}
         <span style={{ font: '500 12px var(--font-ui)', color: 'var(--ink-muted)' }}>© 2026 Oufy</span>
