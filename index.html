@@ -942,7 +942,7 @@ function Footer({ onSupport }) {
         {/* A button, not a link: it opens the support dialog rather than navigating. */}
         <button type="button" onClick={onSupport} style={{ font: '600 12px var(--font-ui)', color: 'var(--action)', background: 'none', border: 'none', padding: 0, cursor: 'pointer', whiteSpace: 'nowrap' }}>Support</button>
         {/* Relative, not root-absolute, so these work from file:// too. */}
-        {[['Privacy', './privacy.html'], ['Terms', './terms.html']].map(([label, href]) => (
+        {[['Privacy', './Privacy/'], ['Terms', './Terms/']].map(([label, href]) => (
           <a key={href} href={href} style={{ font: '600 12px var(--font-ui)', color: 'var(--action)', textDecoration: 'none', whiteSpace: 'nowrap' }}>{label}</a>
         ))}
         <span style={{ font: '500 12px var(--font-ui)', color: 'var(--ink-muted)' }}>© 2026 Oufy</span>
